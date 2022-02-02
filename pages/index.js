@@ -1,35 +1,9 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import { withRouter } from 'next/router';
 import appConfig from '../config.json'
-
-function GlobalStyle() {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: 'Open Sans', sans-serif;
-      }
-      /* App fit Height */ 
-      html, body, #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      /* ./App fit Height */ 
-    `}</style>
-  );
-}
+import React from 'react';
+import { useRouter } from 'next/router';
+import ReactDOM from 'react-dom';
 
 function Titulo(props) {
   console.log(props.children)
@@ -52,16 +26,19 @@ function Titulo(props) {
 
 
 export default function PaginaInicial() {
-  const username = 'Stealty';
+  //const username = 'Stealty';
+
+  const [username, setUsername] = React.useState('');
+  const roteamento = useRouter()
+
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           backgroundColor: appConfig.theme.colors.primary[500],
-          backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
+          backgroundImage: 'url(https://images.wallpaperscraft.com/image/single/cell_light_hexagon_shadow_15345_2560x1440.jpg)',
           backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
         }}
       >
@@ -77,12 +54,18 @@ export default function PaginaInicial() {
             width: '100%', maxWidth: '700px',
             borderRadius: '5px', padding: '32px', margin: '16px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-            backgroundColor: appConfig.theme.colors.neutrals[700],
+            backgroundColor: 'url (https://images.wallpaperscraft.com/image/single/cell_light_hexagon_shadow_15345_2560x1440.jpg)',
           }}
         >
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function (infosDoEvento) {
+              infosDoEvento.preventDefault();
+              console.log('Alguem submeteu o form')
+              roteamento.push('/chat')
+              //window.location.href = '/chat';
+            }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -90,7 +73,31 @@ export default function PaginaInicial() {
           >
             <Titulo tag="h2">Boas vindas de volta!</Titulo>
 
+            {/*<input
+              type="text"
+              value={username}
+              onChange={function handler(event) {
+                console.log('usuario digitou', event.target.value);
+                // Onde está o valor?
+                const valor = event.target.value;
+                // Trocar o valor da variavel
+                // através do React e avise o console
+                setUsername(valor);
+              }}
+            ></input>
+            */}
+            <br />
+
             <TextField
+              value={username}
+              onChange={function (event) {
+                console.log('usuario digitou', event.target.value)
+                // Onde está o valor?
+                const valor = event.target.value;
+                // Trocar o valor da variavel
+                // através do React e avise o console
+                setUsername(valor);
+              }}
               fullWidth
               textFieldColors={{
                 neutral: {
@@ -98,18 +105,18 @@ export default function PaginaInicial() {
                   mainColor: appConfig.theme.colors.neutrals[900],
                   mainColorHighlight: appConfig.theme.colors.primary[500],
                   backgroundColor: appConfig.theme.colors.neutrals[800],
-                },
-              }}
-            />
+                }
+              }} />
+
             <Button
               type='submit'
               label='Entrar'
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
-                mainColor: appConfig.theme.colors.primary[500],
+                mainColor: appConfig.theme.colors.primary[600],
                 mainColorLight: appConfig.theme.colors.primary[400],
-                mainColorStrong: appConfig.theme.colors.primary[600],
+                mainColorStrong: appConfig.theme.colors.primary[400],
               }}
             />
           </Box>
@@ -124,8 +131,7 @@ export default function PaginaInicial() {
               alignItems: 'center',
               maxWidth: '200px',
               padding: '16px',
-              backgroundColor: appConfig.theme.colors.neutrals[800],
-              border: '1px solid',
+              backgroundColor: 'url(https://images.wallpaperscraft.com/image/single/cell_light_hexagon_shadow_15345_2560x1440.jpg)',
               borderColor: appConfig.theme.colors.neutrals[999],
               borderRadius: '10px',
               flex: 1,
